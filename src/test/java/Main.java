@@ -1,22 +1,22 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 class Main {
   public static void main(String[] args) {
-    Map<String, String> params = Util.getParamsFromUrl("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&writerName=신짱구&calc=[a=b]");
+    String url = "/usr/article/list?id=3&memberId=13&boardId=2&hit=73&writerName=신짱구";
+    Map<String, String> params = Util.getParamsFromUrl(url);
     System.out.println(params);
-    System.out.println(params.get("id")); // 3
-    System.out.println(params.get("memberId")); // 13
-    System.out.println(params.get("boardId")); // 2
-    System.out.println(params.get("hit")); // 73
-    System.out.println(params.get("writerName")); // 신짱구
+
+    String urlPath = Util.getUrlPathFromUrl(url);
+    System.out.println(urlPath);
   }
 }
 
 class Util {
   static Map<String, String> getParamsFromUrl(String url) {
-    Map<String, String> params = new HashMap<>();
+    Map<String, String> params = new LinkedHashMap<>();
     String[] urlBits = url.split("\\?", 2);
 
     if(urlBits.length == 1) {
@@ -35,5 +35,9 @@ class Util {
     }
 
     return params;
+  }
+
+  static String getUrlPathFromUrl(String url) {
+    return url.split("\\?", 2)[0];
   }
 }
