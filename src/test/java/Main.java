@@ -1,27 +1,35 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Main {
+class Main {
   public static void main(String[] args) {
-    String queryString1 = "id=3&memberId=13&boardId=2&hit=73&writerName=신짱구";
-    Map<String, String> params1 = Util.getParams(queryString1);
-
-    String queryString2 = "id=1&memberId=3&boardId=1&hit=53&writerName=김유리";
-    Map<String, String> params2 = Util.getParams(queryString2);
-
-    System.out.println(params1);
-    System.out.println(params2);
-
+    Map<String, String> params = Util.getParamsFromUrl("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&writerName=신짱구&calc=[a=b]");
+    System.out.println(params);
+    System.out.println(params.get("id")); // 3
+    System.out.println(params.get("memberId")); // 13
+    System.out.println(params.get("boardId")); // 2
+    System.out.println(params.get("hit")); // 73
+    System.out.println(params.get("writerName")); // 신짱구
   }
 }
 
 class Util {
-  static Map<String, String> getParams(String queryStr) {
-    Map<String, String> params = new LinkedHashMap<>();
+  static Map<String, String> getParamsFromUrl(String url) {
+    Map<String, String> params = new HashMap<>();
+    String[] urlBits = url.split("\\?", 2);
 
-    String[] queryStrBits = queryStr.split("&");
+    if(urlBits.length == 1) {
+      return params;
+    }
 
-    for(String bit : queryStrBits) {
-      String[] bits = bit.split("=");
+    String queryStr = urlBits[1];
+    for(String bit : queryStr.split("&")) {
+      String[] bits = bit.split("=", 2);
+
+      if(bits.length == 1) {
+        continue;
+      }
 
       params.put(bits[0], bits[1]);
     }
