@@ -59,7 +59,7 @@ public class Main {
           continue;
         }
 
-        if(id > articles.size()) {
+        if (id > articles.size()) {
           System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
           continue;
         }
@@ -72,9 +72,12 @@ public class Main {
         System.out.printf("내용 : %s\n", article.content);
 
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
-        if (articles.isEmpty()) {
-          System.out.println("게시물이 존재하지 않습니다.");
-          continue;
+        Map<String, String> params = rq.getParams();
+
+        boolean orderByIdDesc = true;
+
+        if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+          orderByIdDesc = false;
         }
 
         System.out.println("== 게시물 리스트 ==");
@@ -82,9 +85,21 @@ public class Main {
         System.out.println("|  번호  |  제목  |");
         System.out.println("-------------------");
 
-        for (int i = articles.size() - 1; i >= 0; i--) {
-          Article article = articles.get(i);
-          System.out.printf("|   %d    |  %s  |\n", article.id, article.subject);
+        if(orderByIdDesc) { // idAsc(오름차순)가 없으면 기본값인 idDesc(내림차순)
+          for (int i = articles.size() - 1; i >= 0; i--) {
+            Article article = articles.get(i);
+            System.out.printf("|   %d    |  %s  |\n", article.id, article.subject);
+          }
+        }
+        else {
+          for(Article article : articles) {
+            System.out.printf("|   %d    |  %s  |\n", article.id, article.subject);
+          }
+        }
+
+        if (articles.isEmpty()) {
+          System.out.println("게시물이 존재하지 않습니다.");
+          continue;
         }
 
       } else if (rq.getUrlPath().equals("exit")) {
@@ -141,15 +156,15 @@ class Util {
     Map<String, String> params = new LinkedHashMap<>();
     String[] urlBits = url.split("\\?", 2);
 
-    if(urlBits.length == 1) {
+    if (urlBits.length == 1) {
       return params;
     }
 
     String queryStr = urlBits[1];
-    for(String bit : queryStr.split("&")) {
+    for (String bit : queryStr.split("&")) {
       String[] bits = bit.split("=", 2);
 
-      if(bits.length == 1) {
+      if (bits.length == 1) {
         continue;
       }
 
