@@ -74,11 +74,35 @@ public class Main {
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         Map<String, String> params = rq.getParams();
 
+        if (articles.isEmpty()) {
+          System.out.println("게시물이 존재하지 않습니다.");
+          continue;
+        }
+
         boolean orderByIdDesc = true;
 
         if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
           orderByIdDesc = false;
         }
+
+        // 검색 시작
+        List<Article> filteredArticles = articles;
+
+        if(params.containsKey("searchKeyword")) {
+          String searchKeyword = params.get("searchKeyword");
+
+          filteredArticles = new ArrayList<>();
+
+          for(Article article : articles) {
+            if(article.subject.contains(searchKeyword) || article.content.contains(searchKeyword)) {
+              filteredArticles.add(article);
+            }
+          }
+        }
+        // 검색 끝
+
+        List<Article> soredArticles = filteredArticles;
+        // List<Article> soredArticles = articles;
 
         System.out.println("== 게시물 리스트 ==");
         System.out.println("-------------------");
@@ -86,20 +110,15 @@ public class Main {
         System.out.println("-------------------");
 
         if(orderByIdDesc) { // idAsc(오름차순)가 없으면 기본값인 idDesc(내림차순)
-          for (int i = articles.size() - 1; i >= 0; i--) {
-            Article article = articles.get(i);
+          for (int i = soredArticles.size() - 1; i >= 0; i--) {
+            Article article = soredArticles.get(i);
             System.out.printf("|   %d    |  %s  |\n", article.id, article.subject);
           }
         }
         else {
-          for(Article article : articles) {
+          for(Article article : soredArticles) {
             System.out.printf("|   %d    |  %s  |\n", article.id, article.subject);
           }
-        }
-
-        if (articles.isEmpty()) {
-          System.out.println("게시물이 존재하지 않습니다.");
-          continue;
         }
 
       } else if (rq.getUrlPath().equals("exit")) {
