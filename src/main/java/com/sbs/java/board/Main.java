@@ -44,33 +44,7 @@ public class Main {
 
         System.out.printf("%d번 게시물이 등록되었습니다.\n", article.id);
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
-        Map<String, String> params = rq.getParams();
-        int id = 0;
-
-        try {
-          id = Integer.parseInt(params.get("id"));
-        } catch (NumberFormatException e) {
-          System.out.println("id를 정수 형태로 입력해주세요.");
-          continue;
-        }
-
-        if (articles.isEmpty()) {
-          System.out.println("게시물이 존재하지 않습니다.");
-          continue;
-        }
-
-        if (id > articles.size()) {
-          System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
-          continue;
-        }
-
-        Article article = articles.get(id - 1);
-
-        System.out.println("== 게시물 상세보기 ==");
-        System.out.printf("번호 : %d\n", article.id);
-        System.out.printf("제목 : %s\n", article.subject);
-        System.out.printf("내용 : %s\n", article.content);
-
+        actionUsrArticleDetail(rq, articles);
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         actionUsrArticleList(rq, articles);
       } else if (rq.getUrlPath().equals("exit")) {
@@ -82,6 +56,35 @@ public class Main {
 
     System.out.println("== 자바 텍스트 게시판 종료 ==");
     sc.close();
+  }
+
+  static void actionUsrArticleDetail(Rq rq, List<Article> articles) {
+    Map<String, String> params = rq.getParams();
+    int id = 0;
+
+    try {
+      id = Integer.parseInt(params.get("id"));
+    } catch (NumberFormatException e) {
+      System.out.println("id를 정수 형태로 입력해주세요.");
+      return;
+    }
+
+    if (articles.isEmpty()) {
+      System.out.println("게시물이 존재하지 않습니다.");
+      return;
+    }
+
+    if (id > articles.size()) {
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+
+    Article article = articles.get(id - 1);
+
+    System.out.println("== 게시물 상세보기 ==");
+    System.out.printf("번호 : %d\n", article.id);
+    System.out.printf("제목 : %s\n", article.subject);
+    System.out.printf("내용 : %s\n", article.content);
   }
 
   static void actionUsrArticleList(Rq rq, List<Article> articles) {
