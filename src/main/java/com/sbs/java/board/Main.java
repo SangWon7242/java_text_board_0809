@@ -35,6 +35,8 @@ public class Main {
         actionUsrArticleDetail(rq, articles);
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         actionUsrArticleList(rq, articles);
+      } else if (rq.getUrlPath().equals("/usr/article/modify")) {
+        actionUsrArticleModify(sc, rq, articles);
       } else if (rq.getUrlPath().equals("exit")) {
         break;
       } else {
@@ -44,6 +46,38 @@ public class Main {
 
     System.out.println("== 자바 텍스트 게시판 종료 ==");
     sc.close();
+  }
+
+  private static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
+    Map<String, String> params = rq.getParams();
+    int id = 0;
+
+    try {
+      id = Integer.parseInt(params.get("id"));
+    } catch (NumberFormatException e) {
+      System.out.println("id를 정수 형태로 입력해주세요.");
+      return;
+    }
+
+    if (articles.isEmpty()) {
+      System.out.println("게시물이 존재하지 않습니다.");
+      return;
+    }
+
+    if (id > articles.size()) {
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+
+    Article article = articles.get(id - 1);
+
+    System.out.print("새 제목 : ");
+    article.subject = sc.nextLine();
+
+    System.out.print("새 내용 : ");
+    article.content = sc.nextLine();
+
+    System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
   }
 
   static void actionUsrArticleWrite(Scanner sc, List<Article> articles, int lastArticleId) {
