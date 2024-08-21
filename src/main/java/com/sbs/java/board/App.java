@@ -8,8 +8,13 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 public class App {
-  int lastArticleId = 0;
-  List<Article> articles = new ArrayList<>();
+  int lastArticleId;
+  List<Article> articles;
+
+  public App() {
+    lastArticleId = 0;
+    articles = new ArrayList<>();
+  }
 
   void makeTestData() {
     IntStream.rangeClosed(1, 100)
