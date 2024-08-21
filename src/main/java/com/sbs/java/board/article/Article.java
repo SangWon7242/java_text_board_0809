@@ -1,4 +1,4 @@
-package com.sbs.java.board;
+package com.sbs.java.board.article;
 
 public class Article {
   int id;
