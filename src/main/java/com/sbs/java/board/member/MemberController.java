@@ -2,14 +2,13 @@ package com.sbs.java.board.member;
 
 import com.sbs.java.board.container.Container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MemberController {
   private MemberService memberService;
 
   public MemberController() {
     memberService = Container.memberService;
+
+    memberService.makeTestData();
   }
 
   public void doJoin() {
