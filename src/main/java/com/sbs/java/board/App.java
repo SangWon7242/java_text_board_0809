@@ -34,6 +34,8 @@ public class App {
         articleController.doDelete(rq);
       } else if (rq.getUrlPath().equals("/usr/member/join")) {
         memberController.doJoin();
+      } else if (rq.getUrlPath().equals("/usr/member/login")) {
+        memberController.doLogin();
       } else if (rq.getUrlPath().equals("exit")) {
         break;
       } else {
