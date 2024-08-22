@@ -2,12 +2,15 @@ package com.sbs.java.board;
 
 import com.sbs.java.board.article.ArticleController;
 import com.sbs.java.board.container.Container;
+import com.sbs.java.board.member.MemberController;
 
 public class App {
-  ArticleController articleController;
+  private ArticleController articleController;
+  private MemberController memberController;
 
   public App() {
     articleController = Container.articleController;
+    memberController = Container.memberController;
   }
 
   void run() {
@@ -29,6 +32,8 @@ public class App {
         articleController.doModify(rq);
       } else if (rq.getUrlPath().equals("/usr/article/delete")) {
         articleController.doDelete(rq);
+      } else if (rq.getUrlPath().equals("/usr/member/join")) {
+        memberController.doJoin();
       } else if (rq.getUrlPath().equals("exit")) {
         break;
       } else {
