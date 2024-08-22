@@ -2,7 +2,9 @@ package com.sbs.java.board;
 
 import com.sbs.java.board.article.ArticleController;
 import com.sbs.java.board.container.Container;
+import com.sbs.java.board.member.Member;
 import com.sbs.java.board.member.MemberController;
+import com.sbs.java.board.session.Session;
 
 public class App {
   private ArticleController articleController;
@@ -17,7 +19,17 @@ public class App {
     System.out.println("== 자바 텍스트 게시판 ==");
 
     while (true) {
-      System.out.print("명령) ");
+      Session session = Container.session;
+      Member loginedMember = (Member) session.getAttribute("loginedMember");
+
+      String promptName = "명령";
+
+      if(loginedMember != null) {
+        promptName = loginedMember.getName();
+      }
+
+      System.out.printf("%s) ", promptName);
+
       String cmd = Container.scanner.nextLine();
 
       Rq rq = new Rq(cmd);
@@ -35,7 +47,7 @@ public class App {
       } else if (rq.getUrlPath().equals("/usr/member/join")) {
         memberController.doJoin();
       } else if (rq.getUrlPath().equals("/usr/member/login")) {
-        memberController.doLogin();
+        memberController.doLogin(rq);
       } else if (rq.getUrlPath().equals("exit")) {
         break;
       } else {
