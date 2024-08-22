@@ -21,19 +21,19 @@ public class ArticleService {
     return articleRepository.write(subject, content);
   }
 
-  public Article findById(int id) {
-    return articleRepository.findById(id);
-  }
-
-  public List<Article> getArticles(String orderBy, String searchKeyword) {
-    return articleRepository.getArticles(orderBy, searchKeyword);
-  }
-
   public void modify(int id, String subject, String content) {
     articleRepository.modify(id, subject, content);
   }
 
   public void delete(int id) {
     articleRepository.delete(id);
+  }
+
+  public Article findById(int id) {
+    return articleRepository.findById(id);
+  }
+
+  public List<Article> getArticles(String orderBy, String searchKeyword) {
+    return articleRepository.getArticles(orderBy, searchKeyword);
   }
 }

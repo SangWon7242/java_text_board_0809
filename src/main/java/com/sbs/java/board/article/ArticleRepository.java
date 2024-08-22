@@ -22,16 +22,6 @@ public class ArticleRepository {
     return id;
   }
 
-  public Article findById(int id) {
-    for (Article article : articles) {
-      if (article.id == id) {
-        return article;
-      }
-    }
-
-    return null;
-  }
-
   public List<Article> getSortedArticles(String orderBy) {
     List<Article> sortedArticles = articles;
 
@@ -53,7 +43,7 @@ public class ArticleRepository {
 
     if (!searchKeyword.isEmpty()) {
       for (Article article : sortedArticles) {
-        boolean matched = article.subject.contains(searchKeyword) || article.content.contains(searchKeyword);
+        boolean matched = article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword);
 
         filteredArticles = new ArrayList<>();
 
@@ -70,8 +60,8 @@ public class ArticleRepository {
     Article article = findById(id);
 
     if(article != null) {
-      article.subject = subject;
-      article.content = content;
+      article.setSubject(subject);
+      article.setContent(content);
     }
   }
 
@@ -81,5 +71,15 @@ public class ArticleRepository {
     if(article != null) {
       articles.remove(article);
     }
+  }
+
+  public Article findById(int id) {
+    for (Article article : articles) {
+      if (article.getId() == id) {
+        return article;
+      }
+    }
+
+    return null;
   }
 }
