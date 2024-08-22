@@ -29,6 +29,13 @@ public class MemberController {
         continue;
       }
 
+      Member member = memberService.findByUserId(userId);
+
+      if(member != null) {
+        System.out.printf("\"%s\"은(는) 이미 가입된 userId 입니다.\n", userId);
+        continue;
+      }
+
       break;
     }
 

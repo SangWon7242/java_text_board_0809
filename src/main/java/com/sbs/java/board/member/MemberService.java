@@ -19,4 +19,8 @@ public class MemberService {
   public int join(String userId, String password, String name) {
     return memberRepository.join(userId, password, name);
   }
+
+  public Member findByUserId(String userId) {
+    return memberRepository.findByUserId(userId);
+  }
 }
